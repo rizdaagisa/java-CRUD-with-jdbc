@@ -1,7 +1,8 @@
-package com.enigma.tokonyadia.repository;
+package com.enigma.tokonyadia.repository.RepositoryImpl;
 
 import com.enigma.tokonyadia.config.DbConnector;
 import com.enigma.tokonyadia.entity.Store;
+import com.enigma.tokonyadia.repository.StoreRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

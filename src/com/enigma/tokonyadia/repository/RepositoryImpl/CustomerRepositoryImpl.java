@@ -1,7 +1,8 @@
-package com.enigma.tokonyadia.repository;
+package com.enigma.tokonyadia.repository.RepositoryImpl;
 
 import com.enigma.tokonyadia.config.DbConnector;
 import com.enigma.tokonyadia.entity.Customer;
+import com.enigma.tokonyadia.repository.CustomerRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
