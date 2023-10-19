@@ -3,10 +3,7 @@ package com.enigma.tokonyadia.repository;
 import com.enigma.tokonyadia.config.DbConnector;
 import com.enigma.tokonyadia.entity.Product;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,23 +28,21 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public Product save(Product product) throws SQLException {
         this.connection = DbConnector.connect();
-        String query = "INSERT into m_product (id,name,description,price,stock,store_id) VALUES(?,?,?,?,?,?)";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, product.getId());
-        statement.setString(2, product.getName());
-        statement.setString(3, product.getDescription());
-        statement.setLong(4, product.getPrice());
-        statement.setInt(5, product.getStock());
-        statement.setInt(6, product.getStoreId());
-
+        String query = "INSERT into m_product (name,description,price,stock,store_id) VALUES(?,?,?,?,?)";
+        PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        statement.setString(1, product.getName());
+        statement.setString(2, product.getDescription());
+        statement.setLong(3, product.getPrice());
+        statement.setInt(4, product.getStock());
+        statement.setInt(5, product.getStoreId());
         int resultCount = statement.executeUpdate();
-        statement.close();
-        if (resultCount <= 0) {
-            statement.close();
-            throw new RuntimeException("ERROR SAVE data");
-        } else {
+
+        ResultSet generatedKeys = statement.getGeneratedKeys();
+        if (generatedKeys.next()){
+            product.setId(generatedKeys.getInt(1));
             System.out.println("Success SAVE data : " + resultCount);
         }
+        generatedKeys.close();
         statement.close();
         connection.close();
         return product;
